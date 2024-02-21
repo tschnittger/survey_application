@@ -1,1 +1,30 @@
 // app global css in SCSS form
+
+#question {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#question_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: none;
+  border-top: 1px solid #ccc;
+}
+#navigation_buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#send_container {
+  display: table;
+  margin-top: 1%;
+  margin-left: auto;
+}
