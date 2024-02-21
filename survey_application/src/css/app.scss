@@ -18,13 +18,64 @@
   border-bottom: none;
   border-top: 1px solid #ccc;
 }
+
 #navigation_buttons {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 #send_container {
   display: table;
   margin-top: 1%;
   margin-left: auto;
+}
+
+// Admin page
+#new_question_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#new_question_input {
+  width: 80%;
+  margin-top: 20px;
+}
+
+#question_type_container,
+#multiple_choice_container,
+#question_container,
+#answer_container,
+#custon_answer_container,
+#submit_container {
+  margin-top: 10px;
+}
+
+#answer_lin {
+  display: flex;
+  align-items: center;
+}
+
+#answer_container {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+#submit_container {
+  margin-top: 20px;
+}
+
+.label {
+  font-weight: bold;
+}
+
+/* Optional: Stile für die Slide-Transition */
+/* Hier können weitere Animationen oder Übergänge hinzugefügt werden */
+.q-slide-enter-active, .q-slide-leave-active {
+  transition: opacity 0.3s ease;
+}
+.q-slide-enter, .q-slide-leave-to {
+  opacity: 0;
 }
