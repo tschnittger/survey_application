@@ -49,7 +49,7 @@
                   <div id="answer_line">
                     <q-input class="form-control" filled v-model="answer.text" label="Filled" type="text"/>
                     <span>
-                      <q-btn @click="addAnwser(k)" v-show="k == answers.length-1">+</q-btn>
+                      <q-btn @click="addAnwser()" v-show="k == answers.length-1">+</q-btn>
                       <q-btn @click="removeAnswer(k)" v-show="k || ( !k && answers.length > 1)">-</q-btn>
                     </span>
                   </div>
@@ -82,12 +82,12 @@
 </template>
 
 <script>
-/* eslint-disable*/
 import { ref } from 'vue';
 
 var leftDrawerOpen = ref(false);
 
 export default {
+  //Sets values to default when the page is loaded
   setup () {
     return {
       leftDrawerOpen,
@@ -102,6 +102,7 @@ export default {
       alert: ref(false)
     }
   },
+  //Inherits the current answers
   data() {
     return{
       answers:[
@@ -112,9 +113,11 @@ export default {
     };
   },
   methods: {
+    //Changes the state of the left drawer
     toggleLeftDrawer() {
       leftDrawerOpen.value = !leftDrawerOpen.value;
     },
+    //Changes visibility according to question-type
     onTypeChanged(selectedType){
       console.log(selectedType)
       if(selectedType == 'Textfrage'){
@@ -123,12 +126,15 @@ export default {
         this.visible = true
       }
     },
-    addAnwser(index){
+    //Adds a new answer
+    addAnwser(){
       this.answers.push({text:""})
     },
+    //Removes an answer
     removeAnswer(index){
       this.answers.splice(index, 1);
     },
+    //Spawnes the verification popup on submit. Later the logic to save the question will be added here
     onSubmit(){
       this.alert = true
     }

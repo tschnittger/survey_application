@@ -13,8 +13,8 @@
       <div class="question_component"></div>
       <div id="question_fooder">
         <div id="navigation_buttons">
-          <q-btn id="btn_prev" color="secondary" icon="" label="zurück" />
-          <q-btn id="btn_next" color="secondary" icon-right="" label="weiter" />
+          <q-btn id="btn_prev" @click="previous()" color="secondary" icon="" label="zurück" />
+          <q-btn id="btn_next" @click="next()" color="secondary" icon-right="" label="weiter" />
         </div>
         <q-linear-progress
           :value="progress"
@@ -35,14 +35,22 @@
 import { ref } from 'vue';
 export default {
   setup() {
-    const progress = ref(0.4);
+    const progress = ref(0.0);
 
     return {
       progress,
-      randomize() {
-        progress.value = Math.random();
-      },
+
     };
   },
+  methods:{
+    //Counts question counter up and updates progress
+    next() {
+        this.progress += 0.1;
+      },
+    //Counts question counter down and updates progress
+    previous() {
+        this.progress -= 0.1;
+    }
+  }
 };
 </script>

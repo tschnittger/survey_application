@@ -1,5 +1,7 @@
 // app global css in SCSS form
 
+//Survey page
+
 #question {
   justify-content: center;
   align-items: center;
@@ -60,7 +62,7 @@
 #answer_container {
   border-bottom: 1px solid #ccc;
   padding-bottom: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 #submit_container {
@@ -71,8 +73,11 @@
   font-weight: bold;
 }
 
-/* Optional: Stile für die Slide-Transition */
-/* Hier können weitere Animationen oder Übergänge hinzugefügt werden */
+.q-btn {
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
 .q-slide-enter-active, .q-slide-leave-active {
   transition: opacity 0.3s ease;
 }
