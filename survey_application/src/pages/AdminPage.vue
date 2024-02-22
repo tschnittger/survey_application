@@ -167,6 +167,7 @@ function buildQuestion(
   custom_question
 ) {
   if (validateData(type, question, answers)) {
+    updateID()
     //Build JSON based on questiontype
     if (type == type_options[1]) {
       //Build JSON containing question data
@@ -269,6 +270,17 @@ function validateAnswers(type, answers) {
   return true;
 }
 
+function updateID(){
+      if(window.localStorage.length>1){
+          curr_id = first_ID
+          for(var i=1;i<=localStorage.length;i++){
+            if(localStorage.getItem('Q'+i)){
+              curr_id++
+            }
+          }
+        }
+    }
+
 export default {
   //Add a second answer-prompt when the page is loaded, since there always have to be at least 2.
   beforeMount() {
@@ -333,7 +345,10 @@ export default {
         this.failedDialogText = failed_dialog[curr_failed_dialog];
         this.failed_model = true;
       }else{
+        updateID()
+        window.localStorage.setItem('Q'+curr_id, QuestionData)
         curr_id++
+        this.reset()
       }
       this.alert_confirm = true
     },
@@ -343,6 +358,9 @@ export default {
     closeFailedAlert() {
       this.failed_model = false;
     },
+    reset() {
+      //Todo reset boxes
+    }
   },
 };
 </script>
