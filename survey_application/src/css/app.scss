@@ -54,14 +54,17 @@
   margin-top: 10px;
 }
 
+#question_container {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
 #answer_lin {
   display: flex;
   align-items: center;
 }
 
 #answer_container {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
   margin-bottom: 5px;
 }
 
