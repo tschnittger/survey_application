@@ -18,19 +18,12 @@
             center-color="grey-9"
             track-color="transparent"
           />
-          <label id="survey_question_number_label">{{question_number+'/'+question_amount}}</label>
         </div>
       </div>
       <div class="question_component"></div>
       <question-component :QuestionData="QuestionData"> </question-component>
       <div id="question_fooder">
-        <q-linear-progress
-          :value="progress"
-          color="info"
-          class="q-mt-md"
-          rounded
-          size="10px"
-        />
+
         <div id="navigation_buttons">
           <q-btn
             id="btn_prev"
@@ -39,6 +32,7 @@
             icon=""
             label="zurück"
           />
+          <label id="survey_question_number_label">{{question_number+'/'+question_amount}}</label>
           <q-btn
             id="btn_next"
             @click="next()"
@@ -57,13 +51,29 @@ import { ref } from 'vue';
 import QuestionComponent from 'src/components/QuestionComponent.vue';
 
 var question_counter = ref('1');
+var question_amount = ref('0')
 var currQuestion = ref('');
+
+function calculateProgress(){
+  var Answers = 0
+  question_amount.value = 0
+  for(var i=1;i<=window.localStorage.length;i++){
+    if(window.localStorage.getItem('Q'+i)){
+      question_amount.value++
+    }
+    if(window.localStorage.getItem('A'+i)){
+      Answers++
+    }
+  }
+  return (Answers/question_amount.value) *100
+}
 
 export default {
   components: {
     QuestionComponent,
   },
   setup() {
+    calculateProgress()
     const progress = ref(0.0);
     if (window.localStorage.Q1) {
       currQuestion.value = window.localStorage.Q1;
@@ -72,7 +82,7 @@ export default {
       progress,
       QuestionData: currQuestion,
       question_number: ref(question_counter),
-      question_amount: window.localStorage.length
+      question_amount: ref(question_amount)
     };
   },
   methods: {
@@ -87,6 +97,7 @@ export default {
         );
         console.log(currQuestion.value);
       }
+      this.progress = calculateProgress()
     },
     //Counts question counter down and updates progress
     previous() {
@@ -99,6 +110,7 @@ export default {
         );
         console.log(currQuestion.value);
       }
+      this.progress = calculateProgress()
     },
   },
 };
