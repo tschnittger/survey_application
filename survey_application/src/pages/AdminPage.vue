@@ -21,10 +21,22 @@
             <div class="text-h6">Sind Sie mit dieser Frage zufrieden?</div>
           </q-card-section>
 
-          <q-card-section class="q-pt-none"> frage </q-card-section>
+          <q-card-section>
+            <question-component
+              :QuestionData="QuestionData"
+              :user-i-d="-1"
+              :is-interactible="false"
+            ></question-component>
+          </q-card-section>
 
           <q-card-actions align="right">
-            <q-btn flat label="OK" color="primary" v-close-popup />
+            <q-btn
+              flat
+              label="OK"
+              color="primary"
+              v-close-popup
+              @click="confirmQuestion()"
+            />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -40,7 +52,7 @@
                 class="bg-negative text-white"
                 v-show="failed_model"
               >
-                {{ failedDialogText }}
+                {{ DialogTextRef }}
                 <template v-slot:action>
                   <q-btn
                     flat
@@ -144,20 +156,24 @@
 
 <script>
 import { ref } from 'vue';
+import QuestionComponent from 'src/components/QuestionComponent.vue';
 
 var leftDrawerOpen = ref(false);
 const first_ID = 1;
 var curr_id = first_ID;
 var type_options = ['Multiple-Choice Frage', 'Textfrage'];
-var failed_dialog = [
+var dialog_text = [
   'Ein unbekannter Fehler ist aufgetreten, bitte versuchen Sie es erneut.',
   'Bitte wählen Sie einen Fragen-Typ aus.',
   'Bitte Geben Sie eine Frage ein.',
   'Bitte Geben Sie mindesten 2 Antworten an.',
   'Die Antworten dürfen nicht leer sein.',
+  'Frage erfolgreich hinzugefügt!',
 ];
-var curr_failed_dialog = 0;
+var current_dialog = 0;
 var is_failed_visible = false;
+
+var QuestionData = ref('');
 
 function buildQuestion(
   type,
@@ -167,7 +183,7 @@ function buildQuestion(
   custom_question
 ) {
   if (validateData(type, question, answers)) {
-    updateID()
+    updateID();
     //Build JSON based on questiontype
     if (type == type_options[1]) {
       //Build JSON containing question data
@@ -231,7 +247,7 @@ function validateType(type) {
     }
   }
   if (temp_verification == false) {
-    curr_failed_dialog = 1;
+    current_dialog = 1;
     return false;
   } else {
     return true;
@@ -244,7 +260,7 @@ function validateType(type) {
  */
 function validateQuestion(question) {
   if (question == '') {
-    curr_failed_dialog = 2;
+    current_dialog = 2;
     return false;
   } else {
     return true;
@@ -259,29 +275,32 @@ function validateQuestion(question) {
 function validateAnswers(type, answers) {
   for (var i = 0; i < answers.length; i++) {
     if (answers[i].text == '' && type == type_options[0]) {
-      curr_failed_dialog = 4;
+      current_dialog = 4;
       return false;
     }
   }
   if (answers.length < 2 && type == type_options[0]) {
-    curr_failed_dialog = 3;
+    current_dialog = 3;
     return false;
   }
   return true;
 }
 
-function updateID(){
-      if(window.localStorage.length>1){
-          curr_id = first_ID
-          for(var i=1;i<=localStorage.length;i++){
-            if(localStorage.getItem('Q'+i)){
-              curr_id++
-            }
-          }
-        }
+function updateID() {
+  if (window.localStorage.length > 1) {
+    curr_id = first_ID;
+    for (var i = 1; i <= localStorage.length; i++) {
+      if (localStorage.getItem('Q' + i)) {
+        curr_id++;
+      }
     }
+  }
+}
 
 export default {
+  components: {
+    QuestionComponent,
+  },
   //Add a second answer-prompt when the page is loaded, since there always have to be at least 2.
   beforeMount() {
     this.addAnwser();
@@ -298,7 +317,8 @@ export default {
       visible: ref(true),
       alert_confirm: ref(false),
       failed_model: ref(is_failed_visible),
-      failedDialogText: ref('Penis'),
+      DialogTextRef: ref(''),
+      QuestionData: QuestionData,
     };
   },
   //Inherits the current answers
@@ -334,23 +354,25 @@ export default {
     },
     //Spawnes the verification popup on submit. Later the logic to save the question will be called here
     onSubmit() {
-      var QuestionData = buildQuestion(
+      QuestionData.value = buildQuestion(
         this.model,
         this.question_text,
         this.answers,
         this.multiple_choice_checkbox,
         this.custom_question_checkbox
       );
-      if (QuestionData == null) {
-        this.failedDialogText = failed_dialog[curr_failed_dialog];
+      if (QuestionData.value == null) {
+        this.DialogTextRef = dialog_text[current_dialog];
         this.failed_model = true;
-      }else{
-        updateID()
-        window.localStorage.setItem('Q'+curr_id, QuestionData)
-        curr_id++
-        this.reset()
+      } else {
+        this.alert_confirm = true;
       }
-      this.alert_confirm = true
+    },
+    confirmQuestion() {
+      updateID();
+      window.localStorage.setItem('Q' + curr_id, QuestionData.value);
+      curr_id++;
+      this.reset();
     },
     handleInput(event) {
       answers.push(event);
@@ -360,7 +382,7 @@ export default {
     },
     reset() {
       //Todo reset boxes
-    }
+    },
   },
 };
 </script>
