@@ -105,11 +105,13 @@
                       />
 
                       <span>
+                        <!--Button to add answers. Add button only allows a maximun of 10 answers, not including the custom answer.-->
                         <q-btn
                           @click="addAnwser()"
-                          v-show="k == answers.length - 1"
+                          v-show="k == answers.length - 1 && k < 9"
                           >+</q-btn
                         >
+                        <!--Button to remove answers.-->
                         <q-btn
                           @click="removeAnswer(k)"
                           v-show="k || (!k && answers.length > 2)"
@@ -182,7 +184,7 @@ function buildQuestion(
   multiple_choice,
   custom_question
 ) {
-  if (validateData(type, question, answers)) {
+  if (validateData(type, question, answers, custom_question)) {
     updateID();
     //Build JSON based on questiontype
     if (type == type_options[1]) {
@@ -224,10 +226,10 @@ function buildQuestion(
  * @param {*} question The Question itself, can't be empty
  * @param {*} answers Answers for the question, if the question is multiple-choice-type, they cant be empty and there must be at least 2
  */
-function validateData(type, question, answers) {
+function validateData(type, question, answers, custom_question) {
   if (validateType(type)) {
     if (validateQuestion(question)) {
-      if (validateAnswers(type, answers)) {
+      if (validateAnswers(type, answers, custom_question)) {
         return true;
       }
     }
@@ -272,18 +274,20 @@ function validateQuestion(question) {
  * @param {*} type Question-type, to check if the question needs answers
  * @param {*} answers Answers for the question, if the question is multiple-choice-type, they cant be empty and there must be at least 2
  */
-function validateAnswers(type, answers) {
+function validateAnswers(type, answers, custom_question) {
   for (var i = 0; i < answers.length; i++) {
-    if (answers[i].text == '' && type == type_options[0]) {
+    if (type == type_options[0] && answers[i].text == '') {
       current_dialog = 4;
       return false;
     }
   }
-  if (answers.length < 2 && type == type_options[0]) {
+  //Return true if answers match type and if there are at least 2, or 1 and a custom answer
+  if (type == type_options[0] && (answers.length >= 2 || ((answers.length >= 1 && custom_question)))) {
+    return true
+  }else{
     current_dialog = 3;
     return false;
   }
-  return true;
 }
 
 function updateID() {
