@@ -286,6 +286,10 @@ export default {
       this.textanswer_text = '';
       this.radio_text = '';
       this.multiple_choice_text = '';
+      for(var i=0;i<this.multiple_choice_checkboxes.length;i++){
+        this.multiple_choice_checkboxes[i] = false
+      }
+      this.radio = null;
     },
     updateAnswerID(){
       CurrAnswerID = 1;
