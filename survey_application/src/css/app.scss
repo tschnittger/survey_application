@@ -3,34 +3,101 @@
 //Survey page
 
 #question {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  padding: 20%;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+    height: 100vh;
+    margin-top: 10%;
+  }
+
+  @media screen and (max-height: 1000px) and (max-width: 500px){
+    max-width: 100%;
+    height: 100vh;
+    margin-top: 5%;
+    margin-bottom: 10%;
+  }
+  #question_header {
+    margin-bottom: 20px;
+    text-align: center;
+
+    .circle-and-label {
+      display: inline-block;
+    }
+
+    @media screen and (max-width: 970px) {
+      margin-top: 5%;
+      max-width: 80%;
+      margin-bottom: 0px;
+    }
+  }
+
+  .question_component {
+    max-width: 60%;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 70vh;
+
+    @media screen and (max-width: 970px) {
+      max-width: 80%;
+    }
+    @media screen and (orientation: landscape) {
+      //Make sure save button is reachable when turned
+      margin-bottom: 7%;
+    }
+    @media screen and (orientation: horizontal) {
+      //Make sure save button is reachable when turned
+      margin-bottom: 0%;
+    }
+  }
 }
 
-#question_footer {
+#question_fooder {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 10px;
-  border-bottom: none;
-  border-top: 1px solid #ccc;
-}
+  background-color: #ffffff;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 
-#navigation_buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  #navigation_buttons {
+    display: flex;
+    align-items: center;
+  }
+
+  #btn_prev,
+  #btn_next {
+    margin: 0 10px;
+  }
 }
 
 #send_container {
   display: table;
   margin-top: 1%;
   margin-left: auto;
+}
+
+#question_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+}
+
+
+#question_header .circle-and-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 // Admin page
@@ -45,23 +112,12 @@
   margin-top: 20px;
 }
 
-#question_type_container,
-#multiple_choice_container,
-#question_container,
-#answer_container,
-#custon_answer_container,
-#submit_container {
-  margin-top: 10px;
-}
-
 #answer_lin {
   display: flex;
   align-items: center;
 }
 
 #answer_container {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
   margin-bottom: 5px;
 }
 
